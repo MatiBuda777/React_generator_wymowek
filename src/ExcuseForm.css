@@ -1,0 +1,29 @@
+body {
+    font-family: sans-serif;
+    border: 2px solid gray;
+    background-color: #a1a1a1;
+}
+
+div {
+    border: 2px solid #0061c5;
+    border-radius: 7px;
+    background-color: #8db9ec;
+    box-shadow: 5px 5px 4px #3c3c3c;
+    align-items: center;
+}
+
+label {
+    margin: 5%;
+    padding: 15%;
+}
+input, select, textarea {
+    margin: 3%;
+    padding: 12px;
+    box-shadow: 2px 2px 4px #5c5c5c;
+}
+
+select {
+    margin: 10px;
+    height: 3%;
+    width: 7%;
+}
