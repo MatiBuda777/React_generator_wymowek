@@ -1,0 +1,13 @@
+body {
+    font-family: sans-serif;
+    border: 2px solid gray;
+    background-color: #3e877a;
+}
+
+div {
+    border: 2px solid #2540ac;
+    border-radius: 7px;
+    background-color: #8db9ec;
+    box-shadow: 5px 5px 4px #22605e;
+    align-items: center;
+}

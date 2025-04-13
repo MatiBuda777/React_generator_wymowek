@@ -24,65 +24,70 @@ const ExcuseForm = ({sendForm}: PropsExcuseForm) => {
 
     return (
         <div>
-            <input type="text" placeholder={"Imię delikwenta"} value={textName}
-                   onChange={(e) => setTextName(e.target.value)}
-            />
-
-            <br/>
-
-            <select value={textReason} onChange={(e) => setTextReason(e.target.value)}>
-                <option value="spóźnienie">Spóźnienie</option>
-                <option value="brak książek">Brak książek</option>
-                <option value="brak pracy domowej">Brak pracy domowej</option>
-                <option value="nieznajomość tematu">Nieznajomość tematu</option>
-            </select>
-
-            <br/>
-
-            <input type="range" min={0} max={10} value={credibleNum}
-                   onChange={(e) => setCredibleNum(parseInt(e.target.value))}
-            />
-
-            <br/>
-
-            <input type="date" value={textDate}
-                   onChange={(e) => setTextDate(e.target.value)}
-            />
-
-            <br/>
-
-            <select value={textCreative} onChange={(e) => setTextCreative(e.target.value)}>
-                <option value="typowa wymówka">typowa wymówka</option>
-                <option value="słaba">słaba</option>
-                <option value="przeciętna">przeciętna</option>
-                <option value="duża">duża</option>
-                <option value="bardzo duża">bardzo duża</option>
-            </select>
-
-            <br/>
-
-            <textarea placeholder="Miejsce na dodatkowe informacje" value={textInfo}
-                      onChange={(e) => setTextInfo(e.target.value)}
-            />
-
-            <br/>
-
-            <label>
-                <input type="checkbox" checked={isUrgent}
-                          onChange={(e) => setIsUrgent((e.target.checked))}
+            <form>
+                <input type="text" placeholder={"Imię delikwenta"} value={textName}
+                       onChange={(e) => setTextName(e.target.value)}
                 />
-                Pilne
-            </label>
+
+                <br/>
+
+                <select value={textReason} onChange={(e) => setTextReason(e.target.value)}>
+                    <option value="spóźnienie">Spóźnienie</option>
+                    <option value="brak książek">Brak książek</option>
+                    <option value="brak pracy domowej">Brak pracy domowej</option>
+                    <option value="nieznajomość tematu">Nieznajomość tematu</option>
+                </select>
+
+                <br/>
+
+                <input type="range" min={0} max={10} value={credibleNum}
+                       onChange={(e) => setCredibleNum(parseInt(e.target.value))}
+                />
+
+                <br/>
+
+                <input type="date" value={textDate}
+                       onChange={(e) => setTextDate(e.target.value)}
+                />
+
+                <br/>
+
+                <select value={textCreative} onChange={(e) => setTextCreative(e.target.value)}>
+                    <option value="typowa wymówka">typowa wymówka</option>
+                    <option value="słaba">słaba</option>
+                    <option value="przeciętna">przeciętna</option>
+                    <option value="duża">duża</option>
+                    <option value="bardzo duża">bardzo duża</option>
+                </select>
+
+                <br/>
+
+                <textarea placeholder="Miejsce na dodatkowe informacje" value={textInfo}
+                          onChange={(e) => setTextInfo(e.target.value)}
+                />
+
+                <br/>
+
+                <label>
+                    <input type="checkbox" checked={isUrgent}
+                           onChange={(e) => setIsUrgent((e.target.checked))}
+                    />
+                    Pilne
+                </label>
 
 
-            <br/>
+                <br/>
 
-            <button
-                onClick={() => sendForm(textName, textReason, credibleNum, textDate, textCreative, textInfo, isUrgent)}
-            >
-                Wygeneruj wymówkę
-            </button>
+                <button
+                    onClick={(e) => {
+                        e.preventDefault()
+                        sendForm(textName, textReason, credibleNum, textDate, textCreative, textInfo, isUrgent)}}
+                >
+                    Wygeneruj wymówkę
+                </button>
+            </form>
         </div>
+
     )
 }
 

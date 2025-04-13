@@ -1,10 +1,20 @@
 import './App.css'
 import ExcuseForm from "./ExcuseForm.tsx";
+import ExcuseList from "./ExcuseList.tsx";
+import {useState} from "react";
 
 function App() {
-  //const [count, setCount] = useState(0)
+    const [formData, setFormData] = useState({
+        name: '',
+        reason: '',
+        credibility: 0,
+        date: '',
+        creativity: '',
+        extraInfo: '',
+        urgent: false
+    })
 
-    function getFormData(formData : {
+    const handleFormData = (formData : {
         name :string;
         reason :string;
         credibility :number;
@@ -12,13 +22,14 @@ function App() {
         creativity :string;
         info :string;
         urgent :boolean;
-    }) {
+    }) => {
         console.log("Dane z formularza: ", formData)
     }
 
   return (
     <>
-      <ExcuseForm sendForm={getFormData}/>
+      <ExcuseForm sendForm={handleFormData}/>
+        <ExcuseList formData={formData}/>
     </>
   )
 }

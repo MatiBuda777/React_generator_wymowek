@@ -1,24 +1,32 @@
 body {
     font-family: sans-serif;
     border: 2px solid gray;
-    background-color: #a1a1a1;
+    background-color: #3e877a;
 }
 
 div {
-    border: 2px solid #0061c5;
+    border: 2px solid #2540ac;
     border-radius: 7px;
     background-color: #8db9ec;
-    box-shadow: 5px 5px 4px #3c3c3c;
-    align-items: center;
+    box-shadow: 5px 5px 4px #22605e;
+    width: 45%;
+}
+
+form {
+    border: 2px solid #2540ac;
+    border-radius: 7px;
+    background-color: #8db9ec;
+    width: 85%;
+    display: contents;
 }
 
 label {
     margin: 5%;
-    padding: 15%;
+    padding: 15px;
 }
 input, select, textarea {
-    margin: 3%;
-    padding: 12px;
+    margin: 2%;
+    padding: 10px;
     box-shadow: 2px 2px 4px #5c5c5c;
 }
 
