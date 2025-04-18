@@ -13,7 +13,8 @@ interface ExcuseListProps {
 }
 
 const ExcuseList = ({formData} : ExcuseListProps) => {
-    const [excuse, setExcuse] = useState<string>('');
+    const [excuse, setExcuse] = useState<string>('Brak wymówki');
+    const [excuseList, setExcuseList] = useState<string[]>([]);
 
     const generateExcuse = () => {
         const { name, reason, credibility, date, creativity, info, urgent } = formData
@@ -28,15 +29,21 @@ const ExcuseList = ({formData} : ExcuseListProps) => {
                     ? 'Może przejdzie.'
                     : 'Brzmi trochę podejrzanie...'
 
-        const excuseText = `
-            ${name} nie mógł/mogła się pojawić z powodu: ${reason}.
+        let newExcuse = `
+            ${name} nie mógł się pojawić z powodu: ${reason}.
             Wydarzyło się to ${date}, a poziom kreatywności wymówki to: ${creativity}.
             ${info ? `Dodatkowe informacje: ${info}.` : ''}
             ${urgencyText}
             Ocena wiarygodności: ${credibility}/10. ${credibilityComment}
         `.trim()
 
-        setExcuse(excuseText)
+        if (name.endsWith('a')) {
+            newExcuse = newExcuse.replace('mógł', 'mogła')
+        }
+
+
+        setExcuseList(prevList => [...prevList, newExcuse])
+        setExcuse(newExcuse)
     }
 
     return (
@@ -45,6 +52,10 @@ const ExcuseList = ({formData} : ExcuseListProps) => {
             <br />
             <h2>Wygenerowane wymówki:</h2>
             <p style={{ whiteSpace: 'pre-wrap' }}>{excuse}</p>
+
+            {excuseList.map((excuse, index) => (
+                <p key={index} style={{ whiteSpace: 'pre-wrap' }}>{excuse}</p>
+            ))}
         </div>
     )
 }
