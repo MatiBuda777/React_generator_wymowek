@@ -1,37 +1,56 @@
 import {useState} from "react";
 import "./ExcuseForm.css"
+import * as React from "react";
+
+interface ExcuseData {
+    name: string;
+    reason: string;
+    credibility: number;
+    date: string;
+    creativity: string;
+    info: string;
+    isUrgent: boolean;
+}
 
 interface PropsExcuseForm {
-    sendForm: (
-        name: string,
-        reason: string,
-        credibility: number,
-        date: string,
-        creativity: string,
-        additionalInfo: string,
-        urgency: boolean
-    ) => void,
+    sendForm: (formData : ExcuseData) => void,
 }
 
 const ExcuseForm = ({sendForm}: PropsExcuseForm) => {
-    const [textName, setTextName] = useState<string>('')
-    const [textReason, setTextReason] = useState<string>('brak powodu')
-    const [credibleNum, setCredibleNum] = useState<number>(0)
-    const [textDate, setTextDate] = useState<string>('kiedyś')
-    const [textCreative, setTextCreative] = useState<string>('nie ustalona')
-    const [textInfo, setTextInfo] = useState<string>('')
-    const [isUrgent, setIsUrgent] = useState<boolean>(false)
+    const [formData, setFormData] = useState<ExcuseData>({
+            name: "",
+            reason: "",
+            credibility: 0,
+            date: "",
+            creativity: "",
+            info: "",
+            isUrgent: false
+        }
+    )
+
+    const handleChange = (field: keyof ExcuseData, value: any) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        sendForm(formData)
+    };
 
     return (
-        <div>
-            <form>
-                <input type="text" placeholder={"Imię delikwenta"} value={textName}
-                       onChange={(e) => setTextName(e.target.value)}
+        <>
+            <form onSubmit={handleSubmit}>
+                <h2>Generator wymówek</h2>
+
+                <pre>Imię:</pre>
+                <input type="text" placeholder={"Imię delikwenta"} value={formData.name}
+                       onChange={(e) => handleChange("name", e.target.value)}
                 />
 
                 <br/>
 
-                <select value={textReason} onChange={(e) => setTextReason(e.target.value)}>
+                <pre>Powód wymówki:</pre>
+                <select value={formData.reason} onChange={(e) => handleChange("reason", e.target.value)}>
                     <option value="spóźnienie">Spóźnienie</option>
                     <option value="brak książek">Brak książek</option>
                     <option value="brak pracy domowej">Brak pracy domowej</option>
@@ -40,19 +59,22 @@ const ExcuseForm = ({sendForm}: PropsExcuseForm) => {
 
                 <br/>
 
-                <input type="range" min={0} max={10} value={credibleNum}
-                       onChange={(e) => setCredibleNum(parseInt(e.target.value))}
+                <pre>Wiarygodność: {formData.credibility}</pre>
+                <input type="range" min={0} max={10} value={formData.credibility}
+                       onChange={(e) => handleChange("credibility", parseInt(e.target.value))}
                 />
 
                 <br/>
 
-                <input type="date" value={textDate}
-                       onChange={(e) => setTextDate(e.target.value)}
+                <pre>Data wydarzenia:</pre>
+                <input type="date" value={formData.date}
+                       onChange={(e) => handleChange("date", e.target.value)}
                 />
 
                 <br/>
 
-                <select value={textCreative} onChange={(e) => setTextCreative(e.target.value)}>
+                <pre>Kreatywność wymówki:</pre>
+                <select value={formData.creativity} onChange={(e) => handleChange("creativity", e.target.value)}>
                     <option value="typowa wymówka">typowa wymówka</option>
                     <option value="słaba">słaba</option>
                     <option value="przeciętna">przeciętna</option>
@@ -62,31 +84,27 @@ const ExcuseForm = ({sendForm}: PropsExcuseForm) => {
 
                 <br/>
 
-                <textarea placeholder="Miejsce na dodatkowe informacje" value={textInfo}
-                          onChange={(e) => setTextInfo(e.target.value)}
+                <pre>Wyjaśnienie:</pre>
+                <textarea placeholder="Miejsce na dodatkowe informacje" value={formData.info}
+                          onChange={(e) => handleChange("info", e.target.value)}
                 />
 
                 <br/>
 
                 <label>
-                    <input type="checkbox" checked={isUrgent}
-                           onChange={(e) => setIsUrgent((e.target.checked))}
+                    <input type="checkbox" checked={formData.isUrgent}
+                           onChange={(e) => handleChange("isUrgent", e.target.checked)}
                     />
                     Pilne
                 </label>
 
-
                 <br/>
 
-                <button
-                    onClick={(e) => {
-                        e.preventDefault()
-                        sendForm(textName, textReason, credibleNum, textDate, textCreative, textInfo, isUrgent)}}
-                >
+                <button type={"submit"}>
                     Wygeneruj wymówkę
                 </button>
             </form>
-        </div>
+        </>
 
     )
 }

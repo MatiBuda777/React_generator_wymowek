@@ -3,28 +3,24 @@ import ExcuseForm from "./ExcuseForm.tsx";
 import ExcuseList from "./ExcuseList.tsx";
 import {useState} from "react";
 
-function App() {
-    const [formData, setFormData] = useState({
-        name: '',
-        reason: '',
-        credibility: 0,
-        date: '',
-        creativity: '',
-        extraInfo: '',
-        urgent: false
-    })
+interface ExcuseProps {
+    name: string;
+    reason: string;
+    credibility: number;
+    date: string;
+    creativity: string;
+    info: string;
+    isUrgent: boolean;
+}
 
-    const handleFormData = (formData : {
-        name :string;
-        reason :string;
-        credibility :number;
-        date :string;
-        creativity :string;
-        info :string;
-        urgent :boolean;
-    }) => {
-        console.log("Dane z formularza: ", formData)
+function App() {
+    const [formData, setFormData] = useState<ExcuseProps | null>(null)
+
+    const handleFormData = (data : ExcuseProps) => {
+        console.log("Dane z formularza: ", data)
+        setFormData(data)
     }
+
 
   return (
     <>
@@ -34,4 +30,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

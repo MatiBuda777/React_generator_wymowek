@@ -1,13 +1,39 @@
 body {
     font-family: sans-serif;
     border: 2px solid gray;
-    background-color: #3e877a;
 }
 
-div {
+.div_excuse {
     border: 2px solid #2540ac;
     border-radius: 7px;
     background-color: #8db9ec;
     box-shadow: 5px 5px 4px #22605e;
     align-items: center;
+}
+
+.p_excuse {
+    font-family: Arial, Verdana, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #191919;
+    background-color: #f9f9f9;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(67, 67, 67, 0.2);
+    border: 1px solid #ccc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.p_excuse:hover {
+    border-color: #0c7fd6;
+    box-shadow: 0 4px 8px rgba(12, 127, 214, 0.3);
+}
+
+h3 {
+    font-family: Arial, Verdana, sans-serif;
+    font-size: 18px;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    color: #191919;
 }
