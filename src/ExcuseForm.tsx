@@ -50,7 +50,8 @@ const ExcuseForm = ({sendForm}: PropsExcuseForm) => {
                 <br/>
 
                 <pre>Powód wymówki:</pre>
-                <select value={formData.reason} onChange={(e) => handleChange("reason", e.target.value)}>
+                <select value={formData.reason} defaultValue={"Default"} onChange={(e) => handleChange("reason", e.target.value)}>
+                    <option value={"Default"} hidden={true}>Wybierz opcję</option>
                     <option value="spóźnienie">Spóźnienie</option>
                     <option value="brak książek">Brak książek</option>
                     <option value="brak pracy domowej">Brak pracy domowej</option>
@@ -74,7 +75,8 @@ const ExcuseForm = ({sendForm}: PropsExcuseForm) => {
                 <br/>
 
                 <pre>Kreatywność wymówki:</pre>
-                <select value={formData.creativity} onChange={(e) => handleChange("creativity", e.target.value)}>
+                <select value={formData.creativity} defaultValue={"Default"} onChange={(e) => handleChange("creativity", e.target.value)}>
+                    <option value={"Default"} hidden={true}>Wybierz opcję</option>
                     <option value="typowa wymówka">typowa wymówka</option>
                     <option value="słaba">słaba</option>
                     <option value="przeciętna">przeciętna</option>

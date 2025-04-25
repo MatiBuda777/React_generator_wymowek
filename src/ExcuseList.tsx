@@ -1,9 +1,8 @@
-import {useEffect, useState} from "react";
-import "./ExcuseList.css"
-import * as React from "react";
+import { useEffect, useState } from "react";
+import "./ExcuseList.css";
 
 interface ExcuseListProps {
-    formData : {
+    formData: {
         name: string;
         reason: string;
         credibility: number;
@@ -11,79 +10,89 @@ interface ExcuseListProps {
         creativity: string;
         info: string;
         isUrgent: boolean;
-    } | null
+    } | null;
 }
 
-const ExcuseList = ({formData} : ExcuseListProps) => {
-    const [excuse, setExcuse] = useState<string>('Brak wymówki');
-    const [excuseData, setExcuseData] = useState<string[]>([]);
+const ExcuseList = ({ formData }: ExcuseListProps) => {
+    const [excuse, setExcuse] = useState<string>("Brak wymówki");
+    const [excuseData, setExcuseData] = useState<string[][]>([]);
     const [excuseHistory, setExcuseHistory] = useState<string[]>([]);
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
-    const [editingData, setEditingData] = useState<ExcuseListProps['formData']>(null);
+    const [editingData, setEditingData] = useState<ExcuseListProps["formData"]>(null);
 
-    useEffect(() => {generateExcuse()});
-
-    function generateExcuse(data = formData) {
-        if (!data) {
-            return;
+    useEffect(() => {
+        if (formData) {
+            generateExcuse(formData);
         }
-        
-        const {name, reason, credibility, date, creativity, info, isUrgent} = data;
-        const index = excuseHistory.length;
-        setExcuseData( [index.toString(), name, reason, credibility.toString(), date, creativity, info, isUrgent.toString()])
+        console.log(excuse);
+        console.log(excuseData)
+        console.log(excuseHistory)
+    }, [formData]);
+
+    function generateExcuse(data: ExcuseListProps["formData"], index: number | null = null) {
+        if (!data) return "";
+
+        const { name, reason, credibility, date, creativity, info, isUrgent } = data;
+
         if (!name || !reason || !credibility || !date || !creativity) {
-            setExcuse('Brak danych do wygenerowania wymówki.');
-            return;
+            return "Brak danych do wygenerowania wymówki.";
         }
 
-        // Tutaj napisałem sobie komentarz
-        let reasonText = '';
+        let reasonText = "";
         switch (reason) {
             case "spóźnienie":
-                if (name.endsWith('a')) reasonText = 'nie mogła się pojawić';
-                else reasonText = 'nie mógł się pojawić';
+                reasonText = name.endsWith("a") ? "nie mogła się pojawić" : "nie mógł się pojawić";
                 break;
-
             case "brak książek":
-                if (name.endsWith('a')) reasonText = 'nie miała książek';
-                else reasonText = 'nie miał książek';
+                reasonText = name.endsWith("a") ? "nie miała książek" : "nie miał książek";
                 break;
-
             case "brak pracy domowej":
-                if (name.endsWith('a')) reasonText = 'nie zrobiła pracy domowej';
-                else reasonText = 'nie zrobił pracy domowej';
+                reasonText = name.endsWith("a") ? "nie zrobiła pracy domowej" : "nie zrobił pracy domowej";
                 break;
-
             case "nieznajomość tematu":
-                if (name.endsWith('a')) reasonText = 'nie znała tematu';
-                else reasonText = 'nie znał tematu';
+                reasonText = name.endsWith("a") ? "nie znała tematu" : "nie znał tematu";
                 break;
         }
-        const urgencyText = isUrgent ? 'To było naprawdę pilne!' : 'Nie było to pilne.';
+
+        const urgencyText = isUrgent ? "To było naprawdę pilne!" : "Nie było to pilne.";
         const credibilityComment =
-            credibility >= 8
-                ? 'Brzmi bardzo wiarygodnie.'
-                : credibility >= 5
-                    ? 'Może przejdzie.'
-                    : credibility >= 1
-                        ? 'Brzmi podejrzanie'
-                        : 'Chyba głupszej wymówki nie ma';
+            credibility >= 8 ? "Brzmi bardzo wiarygodnie." :
+                credibility >= 5 ? "Może przejdzie." :
+                    credibility >= 1 ? "Brzmi podejrzanie" :
+                        "Chyba głupszej wymówki nie ma";
 
-        const newExcuse = `
-            ${name} ${reasonText}.
-            Wydarzyło się to ${date}, a poziom kreatywności wymówki to: ${creativity}.
-            ${info ? `Dodatkowe informacje: ${info}.` : ''}
-            ${urgencyText}
-            Ocena wiarygodności: ${credibility}/10. ${credibilityComment}
-            `.trim();
-        setExcuse(newExcuse);
-        setExcuseHistory(prev => [...prev, newExcuse]);
+        const excuseString = `${name} ${reasonText}. Wydarzyło się to ${date}, a poziom kreatywności wymówki to: ${creativity}. ${info ? `Dodatkowe informacje: ${info}.` : ""} ${urgencyText} Ocena wiarygodności: ${credibility}/10. ${credibilityComment}`.trim();
 
-        return newExcuse;
+        // Jeśli edytujemy wymówkę, zastąp poprzednią wersję
+        if (index !== null) {
+            setExcuseHistory(prev => {
+                const updatedHistory = [...prev];
+                updatedHistory[index] = excuseString;
+                return updatedHistory;
+            });
+
+            setExcuseData(prev => {
+                const updatedData = [...prev];
+                updatedData[index] = [index.toString(), name, reason, credibility.toString(), date, creativity, info, isUrgent.toString()];
+                return updatedData;
+            });
+        } else {
+            // Nowa wymówka - dodaj do historii
+            setExcuseHistory(prev => [...prev, excuseString]);
+            setExcuseData(prev => [...prev, [excuseHistory.length.toString(), name, reason, credibility.toString(), date, creativity, info, isUrgent.toString()]]);
+        }
+
+        setExcuse(excuseString);
+        return excuseString;
     }
+
+
 
     function EditExcuse() {
         if (!editingData) return null;
+
+        console.log(editingIndex);
+        console.log(editingData);
 
         return (
             <div>
@@ -91,81 +100,99 @@ const ExcuseList = ({formData} : ExcuseListProps) => {
                 <input
                     type="text"
                     value={editingData.name}
-                    onChange={(e) => setEditingData({...editingData, name: e.target.value})}
+                    onChange={(e) => setEditingData(prev => ({ ...prev!, name: e.target.value }))}
                 />
+
                 <select
                     value={editingData.reason}
-                    onChange={(e) => setEditingData({...editingData, reason: e.target.value})}
+                    onChange={(e) => setEditingData(prev => ({ ...prev!, reason: e.target.value }))}
                 >
+                    <option hidden={true}>Wybierz opcję</option>
                     <option value="spóźnienie">Spóźnienie</option>
                     <option value="brak książek">Brak książek</option>
                     <option value="brak pracy domowej">Brak pracy domowej</option>
                     <option value="nieznajomość tematu">Nieznajomość tematu</option>
                 </select>
+
                 <input
-                    type="number"
+                    type="range"
+                    min={0}
+                    max={10}
                     value={editingData.credibility}
-                    onChange={(e) => setEditingData({...editingData, credibility: parseInt(e.target.value)})}
+                    onChange={(e) => setEditingData(prev => ({ ...prev!, credibility: parseInt(e.target.value) }))}
                 />
-                {/* Dodaj pozostałe pola */}
+
+                <input
+                    type="date"
+                    value={editingData.date}
+                    onChange={(e) => setEditingData(prev => ({ ...prev!, date: e.target.value }))}
+                />
+
+                <select
+                    value={editingData.creativity}
+                    onChange={(e) => setEditingData(prev => ({ ...prev!, creativity: e.target.value }))}
+                >
+                    <option hidden={true}>Wybierz opcję</option>
+                    <option value="typowa wymówka">typowa wymówka</option>
+                    <option value="słaba">słaba</option>
+                    <option value="przeciętna">przeciętna</option>
+                    <option value="duża">duża</option>
+                    <option value="bardzo duża">bardzo duża</option>
+                </select>
+
+                <textarea
+                    placeholder="Miejsce na dodatkowe informacje"
+                    value={editingData.info}
+                    onChange={(e) => setEditingData(prev => ({ ...prev!, info: e.target.value }))}
+                />
+
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={editingData.isUrgent}
+                        onChange={(e) => setEditingData(prev => ({ ...prev!, isUrgent: e.target.checked }))}
+                    />
+                    Pilne
+                </label>
+
                 <button onClick={saveChanges}>Zapisz</button>
             </div>
         );
     }
 
 
+
     function saveChanges() {
         if (editingIndex !== null && editingData) {
-            const updatedExcuse = generateExcuse(editingData); // Musisz zaimplementować tę funkcję
-            setExcuseHistory(prev => {
-                const updatedHistory = [...prev];
-                updatedHistory[editingIndex] = updatedExcuse;
-                return updatedHistory;
-            });
+            generateExcuse(editingData, editingIndex);
             setEditingIndex(null);
             setEditingData(null);
         }
     }
 
-    function handleExcuseClick(index) {
-        function parseExcuse(excuse: string) {
 
-            return {
-                name: 'Jan Kowalski',
-                reason: 'spóźnienie',
-                credibility: 8,
-                date: '2023-01-01',
-                creativity: 'duża',
-                info: 'Brak dodatkowych informacji.',
-                isUrgent: false
-            };
-        }
-
-        const parsedData = parseExcuse(excuseHistory[index]); // Implementuj funkcję parseExcuse
-        setEditingData(parsedData);
+    function handleExcuseClick(index: number) {
+        setEditingData(formData);
         setEditingIndex(index);
     }
-
 
     return (
         <>
             <h3>Najnowsza wymówka:</h3>
-            <div className={"div_excuse"}>
-                <p className={"p_excuse"} style={{ whiteSpace: 'pre-wrap' }}>
-                    {excuse}
-                </p>
+            <div className="div_excuse">
+                <p className="p_excuse" style={{ whiteSpace: "pre-wrap" }}>{excuse}</p>
             </div>
+
+            {editingIndex !== null && <EditExcuse />}
+
             <h3>Wszystkie wymówki:</h3>
             {excuseHistory.map((excuse, index) => (
-                <div className={"div_excuse"} key={index}>
-                    <p className={"p_excuse"} onClick={() => handleExcuseClick(index)} style={{ whiteSpace: 'pre-wrap' }}>
-                        {excuse}
-                    </p>
+                <div className="div_excuse" key={index}>
+                    <p className="p_excuse" onClick={() => handleExcuseClick(index)} style={{ whiteSpace: "pre-wrap" }}>{excuse}</p>
                 </div>
             ))}
-            {editingIndex !== null && <EditExcuse />}
         </>
-    )
-}
+    );
+};
 
 export default ExcuseList;
